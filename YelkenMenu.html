@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yelkən Restoran — Menyu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --gold: #c9a96e;
+            --light: #f5f0eb;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233,69,96,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .divider {
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+            margin: 20px auto;
+            border-radius: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+        }
+
+        .nav-scroll {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-scroll::-webkit-scrollbar { display: none; }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Category Section */
+        .category {
+            margin-bottom: 60px;
+            scroll-margin-top: 100px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 1.3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .menu-item:hover::before {
+            opacity: 1;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--primary);
+            font-weight: 600;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .price-input {
+            width: 80px;
+            padding: 5px 10px;
+            border: 2px dashed var(--gold);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(201, 169, 110, 0.1);
+            cursor: text;
+            transition: all 0.3s ease;
+        }
+
+        .price-input:focus {
+            outline: none;
+            border-style: solid;
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2);
+        }
+
+        .price-input::placeholder {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .item-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .item-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: rgba(201, 169, 110, 0.15);
+            color: var(--gold);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-container { display: none; }
+            .header { padding: 30px 20px; }
+            .menu-item { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+            .price-input { border: 1px solid #ddd; background: none; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .category-title { font-size: 1.5rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .nav-scroll { justify-content: flex-start; }
+        }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-hover);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            background: var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo">Yelkən</h1>
+        <div class="divider"></div>
+        <p class="subtitle">Azərbaycan mətbəxinin inciləri</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-scroll">
+            <button class="nav-btn active" onclick="scrollToSection('qutab')">Qutablar</button>
+            <button class="nav-btn" onclick="scrollToSection('qelyanalti')">Qəlyanaltılar</button>
+            <button class="nav-btn" onclick="scrollToSection('kabab')">Kabablar</button>
+            <button class="nav-btn" onclick="scrollToSection('seher')">Səhər Yeməkləri</button>
+            <button class="nav-btn" onclick="scrollToSection('baliq')">Baliqlar</button>
+            <button class="nav-btn" onclick="scrollToSection('isti-yemek')">İsti Yeməklər</button>
+            <button class="nav-btn" onclick="scrollToSection('icki')">İçkilər</button>
+            <button class="nav-btn" onclick="scrollToSection('isti-icki')">İsti İçkilər</button>
+            <button class="nav-btn" onclick="scrollToSection('pive')">Pivələr</button>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- QUTABLAR -->
+        <section class="category" id="qutab">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-circle"></i></div>
+                <h2 class="category-title">Qutablar</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ət qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Dəvə qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ağ pendir qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pendir qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Göy qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Qarın qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Boranı qutabı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- QELYANALTILAR -->
+        <section class="category" id="qelyanalti">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-leaf"></i></div>
+                <h2 class="category-title">Qəlyanaltılar</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Xiyar-pomidor</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pendir assorti</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Manqal salatı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Paytaxt salatı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Mimoza</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Toyuq salatı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Turşular</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Zeytun</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Acika</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Süzmə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Göyərti</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Qatıq (saxsı)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çörək (1 ədəd)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Meyvə (1 pors)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Qarpız</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Abqora</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ayran qrafin</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Blinçik (1 ədəd)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Limon</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Okroşka (qrafin)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çoban salatı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Haydari</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pomidor salatı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sultan məzə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Tərəvəz buketi</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Vişnəli pomidor</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Yuxa ruleti</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Yuxa ruleti (file ilə)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Nar salatı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ağ pendir</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Holland pendiri</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Motal pendiri</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Buket</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Tar-tar</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Alça</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- KABABLAR -->
+        <section class="category" id="kabab">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-fire"></i></div>
+                <h2 class="category-title">Kabablar</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Lülə kabab</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Tikə kabab</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Antrikot</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Dana basdırması</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Toyuq kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Hinduşka kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ciyər böyrək kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Quyruq kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kartof quyruqla</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kartof medalyon</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kartof külləmə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Badımcan quyruqla</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Badımcan kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pomidor kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Bibər kababı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ciyər quyruqla</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- SƏHƏR YEMƏKLƏRİ -->
+        <section class="category" id="seher">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-sun"></i></div>
+                <h2 class="category-title">Səhər Yeməkləri</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Yağ</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pendir</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Qaymaq</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Soyutma yumurta</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Qayqanaq</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pomidor yumurta</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Bal</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- BALIQLAR -->
+        <section class="category" id="baliq">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-fish"></i></div>
+                <h2 class="category-title">Baliqlar</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Asatirin (Nərə)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kefal</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kutum</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sudak</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Bej</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Forel</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çupra balıq</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Palçıq turşusu</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Forel setka</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- İSTİ YEMƏKLƏR -->
+        <section class="category" id="isti-yemek">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-utensils"></i></div>
+                <h2 class="category-title">İsti Yeməklər</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Düşbərə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Mərci</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Hinduşka şorbası</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kənd çolpası şorbası</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sac kənd çolpası</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sac broyler</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sac quzu əti (500qr)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sac mal əti (500qr)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çığırtma kənd çolpası</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Soyutma kənd çolpası</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kənd çolpası (setkada)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Tabaka (kartofla)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kartof qızartması</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Can əti nar qovurma</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Can əti turşulu</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Maça sadə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Mal beli</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Şirəli maça</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Turşulu kabab</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Tuşonka</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kartof fri</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Nagets</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Can əti sac</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- İÇKİLƏR -->
+        <section class="category" id="icki">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-glass-water"></i></div>
+                <h2 class="category-title">Soyuq İçkilər</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Gürcü limonadı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Təbii şirə (1L)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kompot (1L)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Red Bull</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Hell</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kola-Fanta (1L)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kola-Fanta (banka)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Badamlı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Araq (0.5L / 1L / 0.7L)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Fuse Tea</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Harika</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Bizon</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">İsti su</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Grante çaxır</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">İvanovka çaxır</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Yeddi Gözəl çaxır</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Nar şirəsi</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Soyuq çay</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kola/Fanta</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Cappy</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Müts su (qazlı)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sprite</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Bonaqua</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çoppu şok</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Snikers</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- İSTİ İÇKİLƏR VƏ ŞİRNİYYATLAR -->
+        <section class="category" id="isti-icki">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-mug-hot"></i></div>
+                <h2 class="category-title">İsti İçkilər və Şirniyyatlar</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çay sadə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çay mürəbbə ilə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çay iki mürəbbə ilə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çay samovar</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çay dəzgahı</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Plitka şokolad</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Snikers</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Ləpə</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Qoz mürəbbəsi</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Snikers mürəbbəsi</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Cənnət alması mürəbbəsi</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+        <!-- PİVƏLƏR -->
+        <section class="category" id="pive">
+            <div class="category-header">
+                <div class="category-icon"><i class="fas fa-beer-mug-empty"></i></div>
+                <h2 class="category-title">Pivələr və Məzələri</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><div class="item-header"><span class="item-name">Efes (darf/çəllək)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Miller</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">NZS (butulka / bokal)</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Fıstıq</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Çipsi</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Sacaq pendir</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Noxud</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Pivə bokal</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Xırdalan</span><input type="text" class="price-input" placeholder="₼"></div></div>
+                <div class="menu-item"><div class="item-header"><span class="item-name">Kuller</span><input type="text" class="price-input" placeholder="₼"></div></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">Yelkən</div>
+        <p class="footer-text">© 2026 Yelkən Restoran. Bütün hüquqlar qorunur.</p>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Scroll to section
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Update active button
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+            }
+        }
+
+        // Scroll to top button visibility
+        const scrollBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+
+        // Highlight active nav on scroll
+        const sections = document.querySelectorAll('.category');
+        const navBtns = document.querySelectorAll('.nav-btn');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(current)) {
+                    btn.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
